@@ -4,8 +4,8 @@
 
 int DIN = 11;
 int CS = 7;
-int CLK   = 13;
-int FORCE_DISCONNECT = 40;
+int CLK   = 10;
+int FORCE_DISCONNECT = 4;
 int LAST_VALUE = 0;
 int DISCONNECT_COUNTER = 100;
 const uint64_t DEAD_FACE =  0x787cefff93937f3f;
@@ -201,6 +201,10 @@ void loop(){
   int target = readSerial();
   int result = digitalRead(FORCE_DISCONNECT);
   if(DISCONNECT_COUNTER < 0 || result){
+      if(target != 0){
+        memset(PREVIOUS_VALUES, 0, sizeof PREVIOUS_VALUES);
+        target = 0;
+      }
       displayDead();
       return;
   }
